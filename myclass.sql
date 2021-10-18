@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-10-2021 a las 11:51:57
+-- Tiempo de generación: 18-10-2021 a las 20:02:47
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.3.31
 
@@ -52,6 +52,14 @@ CREATE TABLE `asignatura` (
   `nombre` varchar(50) CHARACTER SET utf8mb4 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `asignatura`
+--
+
+INSERT INTO `asignatura` (`id`, `nombre`) VALUES
+(1, 'Procesadores de Lenguajes'),
+(2, 'Nuevos Paradigmas de Interaccion');
+
 -- --------------------------------------------------------
 
 --
@@ -76,6 +84,14 @@ CREATE TABLE `asig_aulas` (
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `asig_aulas`
+--
+
+INSERT INTO `asig_aulas` (`id_aula`, `id_asignatura`, `dia_semana`, `hora`) VALUES
+(1, 2, 5, '09:30:00'),
+(2, 1, 2, '10:30:00');
+
 -- --------------------------------------------------------
 
 --
@@ -86,6 +102,14 @@ CREATE TABLE `asig_profesores` (
   `id_profesor` bigint(20) UNSIGNED NOT NULL,
   `id_asignatura` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `asig_profesores`
+--
+
+INSERT INTO `asig_profesores` (`id_profesor`, `id_asignatura`) VALUES
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -98,16 +122,13 @@ CREATE TABLE `aula` (
   `n_aula` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `Departamento`
+-- Volcado de datos para la tabla `aula`
 --
 
-CREATE TABLE `Departamento` (
-  `cod_depto` varchar(15) NOT NULL,
-  `nombre` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `aula` (`id`, `n_aula`) VALUES
+(1, '1.5'),
+(2, '1.6');
 
 -- --------------------------------------------------------
 
@@ -140,18 +161,13 @@ CREATE TABLE `profesor` (
   `apellidos` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `Trabajador`
+-- Volcado de datos para la tabla `profesor`
 --
 
-CREATE TABLE `Trabajador` (
-  `DNI` varchar(9) NOT NULL,
-  `nombre` varchar(15) NOT NULL,
-  `direccion` varchar(50) NOT NULL,
-  `cod_depto` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `profesor` (`id`, `nombre`, `apellidos`) VALUES
+(1, 'Ramon', 'Lopez'),
+(2, 'Marcelino Jose', 'Cabrera');
 
 --
 -- Índices para tablas volcadas
@@ -182,7 +198,8 @@ ALTER TABLE `asig_alumnos`
 -- Indices de la tabla `asig_aulas`
 --
 ALTER TABLE `asig_aulas`
-  ADD PRIMARY KEY (`id_aula`,`id_asignatura`);
+  ADD PRIMARY KEY (`id_aula`,`id_asignatura`),
+  ADD KEY `id_asignatura` (`id_asignatura`);
 
 --
 -- Indices de la tabla `asig_profesores`
@@ -198,12 +215,6 @@ ALTER TABLE `aula`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `Departamento`
---
-ALTER TABLE `Departamento`
-  ADD PRIMARY KEY (`cod_depto`);
-
---
 -- Indices de la tabla `login`
 --
 ALTER TABLE `login`
@@ -215,13 +226,6 @@ ALTER TABLE `login`
 --
 ALTER TABLE `profesor`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `Trabajador`
---
-ALTER TABLE `Trabajador`
-  ADD PRIMARY KEY (`DNI`),
-  ADD KEY `fk_trab_dept` (`cod_depto`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -237,19 +241,19 @@ ALTER TABLE `alumno`
 -- AUTO_INCREMENT de la tabla `asignatura`
 --
 ALTER TABLE `asignatura`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `aula`
 --
 ALTER TABLE `aula`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor`
 --
 ALTER TABLE `profesor`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -266,7 +270,8 @@ ALTER TABLE `asig_alumnos`
 -- Filtros para la tabla `asig_aulas`
 --
 ALTER TABLE `asig_aulas`
-  ADD CONSTRAINT `asig_aulas_ibfk_1` FOREIGN KEY (`id_aula`) REFERENCES `aula` (`id`);
+  ADD CONSTRAINT `asig_aulas_ibfk_1` FOREIGN KEY (`id_aula`) REFERENCES `aula` (`id`),
+  ADD CONSTRAINT `asig_aulas_ibfk_2` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id`);
 
 --
 -- Filtros para la tabla `asig_profesores`
@@ -280,12 +285,6 @@ ALTER TABLE `asig_profesores`
 --
 ALTER TABLE `login`
   ADD CONSTRAINT `login_ibfk_1` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id`);
-
---
--- Filtros para la tabla `Trabajador`
---
-ALTER TABLE `Trabajador`
-  ADD CONSTRAINT `fk_trab_dept` FOREIGN KEY (`cod_depto`) REFERENCES `Departamento` (`cod_depto`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
