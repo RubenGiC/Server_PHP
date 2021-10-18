@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 18-10-2021 a las 20:02:47
+-- Tiempo de generación: 18-10-2021 a las 20:04:14
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.3.31
 
@@ -70,6 +70,14 @@ CREATE TABLE `asig_alumnos` (
   `id_alumno` bigint(20) UNSIGNED NOT NULL,
   `id_asignatura` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `asig_alumnos`
+--
+
+INSERT INTO `asig_alumnos` (`id_alumno`, `id_asignatura`) VALUES
+(1, 1),
+(1, 2);
 
 -- --------------------------------------------------------
 
