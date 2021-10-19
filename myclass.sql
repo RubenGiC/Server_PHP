@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 18-10-2021 a las 20:04:14
+-- Tiempo de generación: 19-10-2021 a las 17:26:54
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.3.31
 
@@ -49,16 +49,19 @@ INSERT INTO `alumno` (`id`, `nombre`, `apellidos`, `curso`) VALUES
 
 CREATE TABLE `asignatura` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(50) CHARACTER SET utf8mb4 NOT NULL
+  `nombre` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+  `aula` varchar(20) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `hora` time NOT NULL,
+  `dia_semana` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `asignatura`
 --
 
-INSERT INTO `asignatura` (`id`, `nombre`) VALUES
-(1, 'Procesadores de Lenguajes'),
-(2, 'Nuevos Paradigmas de Interaccion');
+INSERT INTO `asignatura` (`id`, `nombre`, `aula`, `hora`, `dia_semana`) VALUES
+(3, 'Nuevos Paradigmas de Interacción', '1.6', '10:30:00', 2),
+(4, 'Procesadores de Lenguajes', '1.5', '11:30:00', 2);
 
 -- --------------------------------------------------------
 
@@ -76,29 +79,8 @@ CREATE TABLE `asig_alumnos` (
 --
 
 INSERT INTO `asig_alumnos` (`id_alumno`, `id_asignatura`) VALUES
-(1, 1),
-(1, 2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `asig_aulas`
---
-
-CREATE TABLE `asig_aulas` (
-  `id_aula` bigint(20) UNSIGNED NOT NULL,
-  `id_asignatura` bigint(20) UNSIGNED NOT NULL,
-  `dia_semana` int(11) NOT NULL,
-  `hora` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `asig_aulas`
---
-
-INSERT INTO `asig_aulas` (`id_aula`, `id_asignatura`, `dia_semana`, `hora`) VALUES
-(1, 2, 5, '09:30:00'),
-(2, 1, 2, '10:30:00');
+(1, 3),
+(1, 4);
 
 -- --------------------------------------------------------
 
@@ -116,27 +98,8 @@ CREATE TABLE `asig_profesores` (
 --
 
 INSERT INTO `asig_profesores` (`id_profesor`, `id_asignatura`) VALUES
-(1, 1),
-(2, 2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `aula`
---
-
-CREATE TABLE `aula` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `n_aula` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `aula`
---
-
-INSERT INTO `aula` (`id`, `n_aula`) VALUES
-(1, '1.5'),
-(2, '1.6');
+(1, 4),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -203,24 +166,11 @@ ALTER TABLE `asig_alumnos`
   ADD KEY `id_asignatura` (`id_asignatura`);
 
 --
--- Indices de la tabla `asig_aulas`
---
-ALTER TABLE `asig_aulas`
-  ADD PRIMARY KEY (`id_aula`,`id_asignatura`),
-  ADD KEY `id_asignatura` (`id_asignatura`);
-
---
 -- Indices de la tabla `asig_profesores`
 --
 ALTER TABLE `asig_profesores`
   ADD PRIMARY KEY (`id_profesor`,`id_asignatura`),
   ADD KEY `id_asignatura` (`id_asignatura`);
-
---
--- Indices de la tabla `aula`
---
-ALTER TABLE `aula`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `login`
@@ -249,13 +199,7 @@ ALTER TABLE `alumno`
 -- AUTO_INCREMENT de la tabla `asignatura`
 --
 ALTER TABLE `asignatura`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `aula`
---
-ALTER TABLE `aula`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `profesor`
@@ -273,13 +217,6 @@ ALTER TABLE `profesor`
 ALTER TABLE `asig_alumnos`
   ADD CONSTRAINT `asig_alumnos_ibfk_1` FOREIGN KEY (`id_alumno`) REFERENCES `alumno` (`id`),
   ADD CONSTRAINT `asig_alumnos_ibfk_2` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id`);
-
---
--- Filtros para la tabla `asig_aulas`
---
-ALTER TABLE `asig_aulas`
-  ADD CONSTRAINT `asig_aulas_ibfk_1` FOREIGN KEY (`id_aula`) REFERENCES `aula` (`id`),
-  ADD CONSTRAINT `asig_aulas_ibfk_2` FOREIGN KEY (`id_asignatura`) REFERENCES `asignatura` (`id`);
 
 --
 -- Filtros para la tabla `asig_profesores`
